@@ -13,6 +13,8 @@ public class FrmContactos extends javax.swing.JInternalFrame {
     /**
      * Creates new form FrmContactos
      */
+    FrmAgregarContacto frmAgregar = new FrmAgregarContacto();
+    
     public FrmContactos() {
         initComponents();
     }
@@ -29,12 +31,12 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnAgregarContacto = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblContactos = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -45,11 +47,16 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         jLabel1.setText("Listado de Contactos");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(0, 51, 153));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Agregar contacto");
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 160, 40));
+        btnAgregarContacto.setBackground(new java.awt.Color(0, 51, 153));
+        btnAgregarContacto.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnAgregarContacto.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarContacto.setText("Agregar contacto");
+        btnAgregarContacto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarContactoActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnAgregarContacto, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 160, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -80,7 +87,7 @@ public class FrmContactos extends javax.swing.JInternalFrame {
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 260, 50));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblContactos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -91,7 +98,7 @@ public class FrmContactos extends javax.swing.JInternalFrame {
                 "Id", "Cedula", "Nombre", "Apellidos", "Telefono", "Correo"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblContactos);
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 680, 150));
 
@@ -113,16 +120,20 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAgregarContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarContactoActionPerformed
+        frmAgregar.setVisible(true);
+    }//GEN-LAST:event_btnAgregarContactoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnAgregarContacto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblContactos;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }
