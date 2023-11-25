@@ -1,0 +1,1 @@
+[{"idContacto":1,"cedula":"1234455","nombre":"Jose","apellidos":"V","telefono":"56465576","correo":"jose@gmail.com"},{"idContacto":2,"cedula":"76878766","nombre":"Alexis","apellidos":"V","telefono":"60504934","correo":"alexis@gmail.com"}]

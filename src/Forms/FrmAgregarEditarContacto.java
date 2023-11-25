@@ -7,6 +7,8 @@ package Forms;
 import BD.ClsBD;
 import Class.ClsContactos;
 import Class.ClsGlobales;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
@@ -53,6 +55,13 @@ public boolean validarCampos() {
         txtApellidos.setText("");
         txtTelefono.setText("");
         txtEmail.setText("");
+    }
+    
+        public boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
     
     /*Asignar ID*/
@@ -200,46 +209,48 @@ public boolean validarCampos() {
     }//GEN-LAST:event_btnCerrarActionPerformed
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-    ClsContactos contacto = new ClsContactos();
-    if (validarCampos()) {
-        if (txtId.getText().equals("")) {
-            contacto.idContacto = AsignarId();
-            contacto.cedula = this.txtCedula.getText();
-            contacto.nombre = this.txtNombre.getText();
-            contacto.apellidos = this.txtApellidos.getText();
-            contacto.telefono = this.txtTelefono.getText();
-            contacto.correo = this.txtEmail.getText();
-            ClsBD.jsonContactos.add(contacto);
-
-            if (contacto.GuardarDatosMemoria()) {
-                ClsGlobales.obtenerDatosGlobal();
-                JOptionPane.showMessageDialog(null, "Contacto creado con éxito.", "Creado con exito", JOptionPane.INFORMATION_MESSAGE);
-                LimpiarDatos();
-            } else {
-                JOptionPane.showMessageDialog(null, "Algo ha salido mal.", "Error al crear.", JOptionPane.ERROR_MESSAGE);
-            }    
-        } else {
-            // Obtener el ID del campo de texto y convertirlo a entero
-            int idParaActualizar = Integer.parseInt(txtId.getText());
-
-            // Crear un objeto con los datos actualizados del formulario
-            ClsContactos contactoActualizado = new ClsContactos();
-            contactoActualizado.cedula = this.txtCedula.getText();
-            contactoActualizado.nombre = this.txtNombre.getText();
-            contactoActualizado.apellidos = this.txtApellidos.getText();
-            contactoActualizado.telefono = this.txtTelefono.getText();
-            contactoActualizado.correo = this.txtEmail.getText();
-
-            // Actualizar los datos del contacto
-            if (contacto.ActualizadoDeDatos(idParaActualizar, contactoActualizado)) {
-                JOptionPane.showMessageDialog(null, "Contacto actualizado con éxito.", "Actualizado con exito", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Algo ha salido mal.", "Error al actualizar.", JOptionPane.ERROR_MESSAGE);
+        ClsContactos contacto = new ClsContactos();
+        if (validarCampos()) {
+            if (!isValidEmail(txtEmail.getText())) {
+                JOptionPane.showMessageDialog(rootPane, "Por favor, ingresa un correo electrónico válido.", "Correo Inválido", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            if (txtId.getText().equals("")) {
+                contacto.idContacto = AsignarId();
+                contacto.cedula = this.txtCedula.getText();
+                contacto.nombre = this.txtNombre.getText();
+                contacto.apellidos = this.txtApellidos.getText();
+                contacto.telefono = this.txtTelefono.getText();
+                contacto.correo = this.txtEmail.getText();
+                ClsBD.jsonContactos.add(contacto);
+
+                if (contacto.GuardarDatosMemoria()) {
+                    JOptionPane.showMessageDialog(null, "Contacto creado con éxito.", "Creado con exito", JOptionPane.INFORMATION_MESSAGE);
+                    LimpiarDatos();
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Algo ha salido mal.", "Error al crear.", JOptionPane.ERROR_MESSAGE);
+                }    
+            } else {
+                int idParaActualizar = Integer.parseInt(txtId.getText());
+                ClsContactos contactoActualizado = new ClsContactos();
+                contactoActualizado.cedula = this.txtCedula.getText();
+                contactoActualizado.nombre = this.txtNombre.getText();
+                contactoActualizado.apellidos = this.txtApellidos.getText();
+                contactoActualizado.telefono = this.txtTelefono.getText();
+                contactoActualizado.correo = this.txtEmail.getText();
+
+                if (contacto.ActualizadoDeDatos(idParaActualizar, contactoActualizado)) {
+                    JOptionPane.showMessageDialog(null, "Contacto actualizado con éxito.", "Actualizado con exito", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Algo ha salido mal.", "Error al actualizar.", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Por favor, completa todos los campos.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(rootPane, "Por favor, completa todos los campos.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed

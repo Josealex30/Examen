@@ -24,6 +24,32 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         initComponents();
         contactos.ObtenerDatosMemoria();
         RellenarTabla();
+        LlenarLista("");
+    }
+    
+        public void LlenarLista(String buscar) {
+        DefaultTableModel modelo = (DefaultTableModel) tblContactos.getModel();
+        modelo.setRowCount(0);
+
+        for (ClsContactos contacto : ClsBD.jsonContactos) {
+            Object[] row = new Object[]{contacto.idContacto,
+                                        contacto.cedula,
+                                        contacto.nombre,
+                                        contacto.apellidos,
+                                        contacto.telefono,
+                                        contacto.correo};
+            
+            if (buscar.equals("")) {
+                modelo.addRow(row);
+            } else if (String.valueOf(contacto.idContacto).toLowerCase().contains(buscar) ||
+                       contacto.cedula.toLowerCase().contains(buscar) ||
+                       contacto.nombre.toLowerCase().contains(buscar) ||
+                       contacto.apellidos.toLowerCase().contains(buscar) ||
+                       contacto.telefono.toLowerCase().contains(buscar) ||
+                       contacto.correo.toLowerCase().contains(buscar)) {
+                modelo.addRow(row);
+            }
+        }
     }
     
        private void RellenarTabla() {
@@ -54,6 +80,7 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         txtBuscar = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblContactos = new javax.swing.JTable();
+        btnRefrescar = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -80,6 +107,11 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         jLabel2.setText("Buscar contacto:");
 
         txtBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -136,6 +168,17 @@ public class FrmContactos extends javax.swing.JInternalFrame {
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 680, 180));
 
+        btnRefrescar.setBackground(new java.awt.Color(51, 153, 0));
+        btnRefrescar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnRefrescar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRefrescar.setText("Agregar contacto");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRefrescar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 160, 40));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 290));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,9 +219,18 @@ public class FrmContactos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tblContactosMouseClicked
 
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        RellenarTabla();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        LlenarLista(txtBuscar.getText().toLowerCase());
+    }//GEN-LAST:event_txtBuscarKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarContacto;
+    private javax.swing.JButton btnRefrescar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
