@@ -9,5 +9,11 @@ package Class;
  * @author vinva
  */
 public class ClsGlobales {
+    public static int idSeleccionado;
+    
+    public static void obtenerDatosGlobal() {
+        ClsContactos contactos = new ClsContactos();
+        contactos.ObtenerDatosMemoria();
+    }
     
 }

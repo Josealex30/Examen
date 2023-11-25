@@ -4,20 +4,38 @@
  */
 package Forms;
 
+import BD.ClsBD;
+import Class.ClsContactos;
+import Class.ClsGlobales;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author vinva
  */
-public class FrmAgregarContacto extends javax.swing.JFrame {
+public class FrmAgregarEditarContacto extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmAgregarContacto
      */
-    public FrmAgregarContacto() {
+    public FrmAgregarEditarContacto() {
         initComponents();
+        IniciarDatosAEditar();
     }
+    
+public void IniciarDatosAEditar() {
+    System.out.println("ID a editar: " + ClsGlobales.idSeleccionado);
+    for (ClsContactos contactos : ClsBD.jsonContactos) {
+        if (ClsGlobales.idSeleccionado == contactos.idContacto) {
+            txtId.setText(String.valueOf(contactos.idContacto));
+            txtCedula.setText(contactos.cedula);
+            txtNombre.setText(contactos.nombre);
+            txtApellidos.setText(contactos.apellidos);
+            txtTelefono.setText(contactos.telefono);
+            txtEmail.setText(contactos.correo);
+        }
+    }
+}
     
 public boolean validarCampos() {
     /*Si alguno viene vacio, retorna un false, si todos vienen completos, retorna un true*/
@@ -28,6 +46,22 @@ public boolean validarCampos() {
            !txtTelefono.getText().isEmpty() &&
            !txtEmail.getText().isEmpty();
 }
+
+    public void LimpiarDatos() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtApellidos.setText("");
+        txtTelefono.setText("");
+        txtEmail.setText("");
+    }
+    
+    /*Asignar ID*/
+     public int AsignarId() {
+        if (ClsBD.jsonContactos != null) {
+             return ClsBD.jsonContactos.size() + 1;
+        }
+        return 1; // Si la lista es nula, retorna 1 como el primer ID
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,10 +83,11 @@ public boolean validarCampos() {
         txtEmail = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
-        txtLimpiar = new javax.swing.JButton();
-        btnGuardar1 = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         txtId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        btnLimpiar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,33 +126,44 @@ public boolean validarCampos() {
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 90, 20));
         jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 150, 200, 30));
 
-        txtLimpiar.setBackground(new java.awt.Color(102, 102, 102));
-        txtLimpiar.setForeground(new java.awt.Color(255, 255, 255));
-        txtLimpiar.setText("Limpiar");
-        txtLimpiar.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrar.setBackground(new java.awt.Color(204, 0, 0));
+        btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLimpiarActionPerformed(evt);
+                btnCerrarActionPerformed(evt);
             }
         });
-        jPanel1.add(txtLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 200, 40));
+        jPanel1.add(btnCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 110, 40));
 
-        btnGuardar1.setBackground(new java.awt.Color(0, 51, 153));
-        btnGuardar1.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar1.setText("Guardar");
-        btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setBackground(new java.awt.Color(0, 51, 153));
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar1ActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGuardar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, 200, 40));
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 200, 120, 40));
 
         txtId.setEditable(false);
+        txtId.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 200, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Id:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 50, 20));
+
+        btnLimpiar.setBackground(new java.awt.Color(102, 102, 102));
+        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 110, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Agregar Contacto");
@@ -149,23 +195,56 @@ public boolean validarCampos() {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLimpiarActionPerformed
-    txtId.setText("");
-    txtCedula.setText("");
-    txtNombre.setText("");
-    txtApellidos.setText("");
-    txtTelefono.setText("");
-    txtEmail.setText("");
-    }//GEN-LAST:event_txtLimpiarActionPerformed
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCerrarActionPerformed
+    
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    ClsContactos contacto = new ClsContactos();
+    if (validarCampos()) {
+        if (txtId.getText().equals("")) {
+            contacto.idContacto = AsignarId();
+            contacto.cedula = this.txtCedula.getText();
+            contacto.nombre = this.txtNombre.getText();
+            contacto.apellidos = this.txtApellidos.getText();
+            contacto.telefono = this.txtTelefono.getText();
+            contacto.correo = this.txtEmail.getText();
+            ClsBD.jsonContactos.add(contacto);
 
-    private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
-        if(validarCampos()) {
-            
-         }
-        else {
-            JOptionPane.showMessageDialog(rootPane, "Por favor, completa todos los campos.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
+            if (contacto.GuardarDatosMemoria()) {
+                ClsGlobales.obtenerDatosGlobal();
+                JOptionPane.showMessageDialog(null, "Contacto creado con éxito.", "Creado con exito", JOptionPane.INFORMATION_MESSAGE);
+                LimpiarDatos();
+            } else {
+                JOptionPane.showMessageDialog(null, "Algo ha salido mal.", "Error al crear.", JOptionPane.ERROR_MESSAGE);
+            }    
+        } else {
+            // Obtener el ID del campo de texto y convertirlo a entero
+            int idParaActualizar = Integer.parseInt(txtId.getText());
+
+            // Crear un objeto con los datos actualizados del formulario
+            ClsContactos contactoActualizado = new ClsContactos();
+            contactoActualizado.cedula = this.txtCedula.getText();
+            contactoActualizado.nombre = this.txtNombre.getText();
+            contactoActualizado.apellidos = this.txtApellidos.getText();
+            contactoActualizado.telefono = this.txtTelefono.getText();
+            contactoActualizado.correo = this.txtEmail.getText();
+
+            // Actualizar los datos del contacto
+            if (contacto.ActualizadoDeDatos(idParaActualizar, contactoActualizado)) {
+                JOptionPane.showMessageDialog(null, "Contacto actualizado con éxito.", "Actualizado con exito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Algo ha salido mal.", "Error al actualizar.", JOptionPane.ERROR_MESSAGE);
+            }
         }
-    }//GEN-LAST:event_btnGuardar1ActionPerformed
+    } else {
+        JOptionPane.showMessageDialog(rootPane, "Por favor, completa todos los campos.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        LimpiarDatos();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,26 +263,29 @@ public boolean validarCampos() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmAgregarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAgregarEditarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmAgregarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAgregarEditarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmAgregarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAgregarEditarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmAgregarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAgregarEditarContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmAgregarContacto().setVisible(true);
+                new FrmAgregarEditarContacto().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardar1;
+    private javax.swing.JButton btnCerrar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -216,7 +298,6 @@ public boolean validarCampos() {
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtId;
-    private javax.swing.JButton txtLimpiar;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables

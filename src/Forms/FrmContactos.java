@@ -4,6 +4,11 @@
  */
 package Forms;
 
+import BD.ClsBD;
+import Class.ClsContactos;
+import Class.ClsGlobales;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author vinva
@@ -13,10 +18,22 @@ public class FrmContactos extends javax.swing.JInternalFrame {
     /**
      * Creates new form FrmContactos
      */
-    FrmAgregarContacto frmAgregar = new FrmAgregarContacto();
+        ClsContactos contactos = new ClsContactos();
     
     public FrmContactos() {
         initComponents();
+        contactos.ObtenerDatosMemoria();
+        RellenarTabla();
+    }
+    
+       private void RellenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) this.tblContactos.getModel();
+        modelo.setRowCount(0);
+        
+        for (ClsContactos contacto : ClsBD.jsonContactos) {
+            Object[] row = new Object[] { contacto.idContacto, contacto.cedula, contacto.nombre, contacto.apellidos, contacto.telefono, contacto.correo };
+            modelo.addRow(row);
+        }
     }
 
     /**
@@ -89,18 +106,35 @@ public class FrmContactos extends javax.swing.JInternalFrame {
 
         tblContactos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Id", "Cedula", "Nombre", "Apellidos", "Telefono", "Correo"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblContactos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblContactosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblContactos);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 680, 150));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 680, 180));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 290));
 
@@ -121,8 +155,26 @@ public class FrmContactos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarContactoActionPerformed
+        ClsGlobales.idSeleccionado = -1;
+        FrmAgregarEditarContacto frmAgregar = new FrmAgregarEditarContacto();
         frmAgregar.setVisible(true);
     }//GEN-LAST:event_btnAgregarContactoActionPerformed
+
+    private void tblContactosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblContactosMouseClicked
+        /*OBTENGO EL ID DE LA FILA SELECCIONADA Y 
+        LA GUARDO EN UNA VARIABLE ESTATICA PARA 
+        PODER CONSULTAR Y ASI INICIALIZAR 
+        LOS DATOS EN EL OTRO FORMULARIO*/
+        int selectedRow = tblContactos.getSelectedRow();
+        Object idValue = tblContactos.getValueAt(selectedRow, 0);
+
+        if (idValue != null) {
+            ClsGlobales.idSeleccionado = Integer.parseInt(idValue.toString());
+            System.out.println("ID seleccionado al dar click: " + ClsGlobales.idSeleccionado);
+            FrmAgregarEditarContacto frmAgregar = new FrmAgregarEditarContacto();
+            frmAgregar.setVisible(true);
+        }
+    }//GEN-LAST:event_tblContactosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
