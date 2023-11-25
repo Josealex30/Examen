@@ -21,7 +21,7 @@ public class ClsContactos {
     public String correo;
 
     /*GUARDADO*/
-    public boolean guardarDatosEnArchivo() {
+    public boolean GuardarDatosMemoria() {
         Gson gson = new Gson();
         String jsonString = gson.toJson(ClsBD.jsonContactos);
 
@@ -29,7 +29,7 @@ public class ClsContactos {
             FileWriter fileWriter = new FileWriter("contactos.txt");
             fileWriter.write(jsonString);
             fileWriter.close();
-            obtenerDatosDesdeArchivo();
+            ObtenerDatosMemoria();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -39,7 +39,7 @@ public class ClsContactos {
     }
 
     /*OBTENER DATOS DEL ARCHIVO TXT*/
-    public void obtenerDatosDesdeArchivo() {
+    public void ObtenerDatosMemoria() {
         try {
             FileReader reader = new FileReader("contactos.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);
